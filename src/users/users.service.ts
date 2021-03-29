@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
 
@@ -15,7 +15,7 @@ export class UsersService {
 
   async insertOne(user: any) : Promise<void>{
     if(this.users.some((u) => u.username == user.username)){
-      throw new Error('User already exists');
+      throw new BadRequestException('User already exists');
     }
 
     let newID : number = Math.max.apply(null, this.users.map((u) => u.userId)) + 1;
