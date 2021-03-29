@@ -19,6 +19,16 @@ export class AuthService {
     return null;
     }
 
+  async  googleLogin(req) {
+      if (!req.user) {
+        return 'No user from google'
+      }
+  
+      const user = await this.usersService.findByEmail(req.user.email);
+
+      return this.login(user);
+    }
+  
   async login(user: any) {
     const payload = { username: user.username, sub: user.userId };
     return {
