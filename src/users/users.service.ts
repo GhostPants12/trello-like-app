@@ -6,8 +6,7 @@ export type User = any;
 
 @Injectable()
 export class UsersService {
-  private readonly users = [
-  ];
+  private readonly users = [];
 
   async findOne(username: string): Promise<User | undefined> {
     return this.users.find(user => user.username === username);
@@ -18,7 +17,9 @@ export class UsersService {
       throw new BadRequestException('User already exists');
     }
 
-    let newID : number = Math.max.apply(null, this.users.map((u) => u.userId)) + 1;
+    let idArr = this.users.map((u) => u.userId);
+    let newID : number = idArr.length > 0 ? Math.max.apply(null, idArr) + 1 : 1;
+    console.log(newID);
     const salt = await bcrypt.genSalt();
     this.users.push({
       userId : newID,
