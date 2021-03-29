@@ -1,20 +1,12 @@
 import { Injectable } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
+
 
 export type User = any;
 
 @Injectable()
 export class UsersService {
   private readonly users = [
-    {
-      userId: 1,
-      username: 'john',
-      password: 'changeme',
-    },
-    {
-      userId: 2,
-      username: 'maria',
-      password: 'guess',
-    },
   ];
 
   async findOne(username: string): Promise<User | undefined> {
@@ -27,10 +19,11 @@ export class UsersService {
     }
 
     let newID : number = Math.max.apply(null, this.users.map((u) => u.userId)) + 1;
+    const salt = await bcrypt.genSalt();
     this.users.push({
       userId : newID,
       username : user.username,
-      password : user.password
+      password :  await bcrypt.hash(user.password, salt)
     });
   }
 }
