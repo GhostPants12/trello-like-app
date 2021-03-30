@@ -4,6 +4,8 @@
 
 #Config
 .env
+*.pem
+/secrets
 
 # Logs
 logs
