@@ -28,13 +28,16 @@
     "@nestjs/platform-express": "^7.6.13",
     "bcrypt": "^5.0.1",
     "dotenv": "^8.2.0",
+    "mysql2": "^2.2.5",
     "passport": "^0.4.1",
     "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^6.6.6"
+    "rxjs": "^6.6.6",
+    "sequelize": "^6.6.2",
+    "sequelize-typescript": "^2.1.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.5.6",

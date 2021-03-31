@@ -1,36 +1,31 @@
-import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, Injectable, Inject } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { UserDto } from './dto/user.dto';
-
-
-export type User = any;
+import {User} from './user.entity';
 
 @Injectable()
 export class UsersService {
-  private readonly users = [];
+  constructor(
+    @Inject('USERS_REPOSITORY') private usersRepository: typeof User) {}
 
   async findOne(username: string): Promise<User | undefined> {
-    return this.users.find(user => user.username === username);
+    return this.usersRepository.findOne({ where: {username : username}})
   }
 
   async findByEmail(email: string): Promise<User | undefined> {
-    return this.users.find(user => user.email === email);
+    return this.usersRepository.findOne({where : {email : email}});
   }
 
   async insertOne(user: UserDto) : Promise<void>{
-    if(this.users.some((u) => u.username == user.username)){
-      throw new BadRequestException('User already exists');
-    }
+      if (user.password.length < 8){
+        throw new BadRequestException('Password must be at least 8 characters');
+      }
 
-
-    let idArr = this.users.map((u) => u.userId);
-    let newID : number = idArr.length > 0 ? Math.max.apply(null, idArr) + 1 : 1;
-    const salt = await bcrypt.genSalt();
-    this.users.push({
-      userId : newID,
-      username : user.username,
-      email : user.email,
-      password :  await bcrypt.hash(user.password, salt)
-    });
+      const salt = await bcrypt.genSalt();
+      this.usersRepository.create({
+        username: user.username,
+        email: user.email,
+        password: await bcrypt.hash(user.password, salt)
+      } as User);
   }
 }

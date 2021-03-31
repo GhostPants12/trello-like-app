@@ -5,9 +5,10 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { UsersModule } from './users/users.module';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
-  imports: [AuthModule, UsersModule],
+  imports: [AuthModule, UsersModule, DatabaseModule],
   controllers: [AppController],
   providers: [AppService, 
     {
