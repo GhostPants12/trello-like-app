@@ -12,11 +12,11 @@ export class AppController {
   @Public()
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
-  async login(@Request() req) {
-    return this.authService.login(req.user);
+  async login(@Body() body) {
+    return this.authService.login(body);
   }
 
-  @Get('profile')
+  @Get('user')
   getProfile(@Request() req) {
     return req.user;
   }
