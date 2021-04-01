@@ -32,7 +32,7 @@ export class AuthService {
   
   async login(user: UserDto) {
     const userRecord = await this.usersService.findOne(user.username);
-    const payload = { username: userRecord.username };
+    const payload = { username: userRecord.username, sub: userRecord.id };
     return {
       access_token: this.jwtService.sign(payload),
       };

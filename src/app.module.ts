@@ -7,9 +7,11 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { UsersModule } from './users/users.module';
 import { DatabaseModule } from './database/database.module';
 import { BoardsModule } from './boards/boards.module';
+import { CardsModule } from './cards/cards.module';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
-  imports: [AuthModule, UsersModule, DatabaseModule, BoardsModule],
+  imports: [AuthModule, UsersModule, DatabaseModule, BoardsModule, CardsModule, CommentsModule],
   controllers: [AppController],
   providers: [AppService, 
     {

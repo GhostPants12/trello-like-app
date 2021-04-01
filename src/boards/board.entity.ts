@@ -1,6 +1,7 @@
-import { Table, Column, Model, HasOne, BelongsToMany} from 'sequelize-typescript';
+import { Table, Column, Model, HasMany, BelongsToMany} from 'sequelize-typescript';
 import {User} from '../users/user.entity';
 import {UserBoard} from './userBoard.entity';
+import {Card} from '../cards/card.entity';
 
 @Table
 export class Board extends Model<Board> {  
@@ -9,4 +10,7 @@ export class Board extends Model<Board> {
 
   @BelongsToMany(() => User, () => UserBoard)
   users : User[];
+
+  @HasMany(() => Card)
+  cards : Card[];
 }
