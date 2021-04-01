@@ -10,7 +10,7 @@ export class AuthService {
     private jwtService: JwtService
 ) {}
 
-  async validateUser(username: string, pass: string): Promise<any> {
+  async validateUser(username: string, pass: string): Promise<Partial<UserDto>|null> {
     const user = await this.usersService.findOne(username);
     const isMatch = await bcrypt.compare(pass, user.password);
     if (user && isMatch) {

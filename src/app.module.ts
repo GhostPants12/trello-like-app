@@ -9,9 +9,10 @@ import { DatabaseModule } from './database/database.module';
 import { BoardsModule } from './boards/boards.module';
 import { CardsModule } from './cards/cards.module';
 import { CommentsModule } from './comments/comments.module';
+import { RepositoryModule } from './repository/repository.module';
 
 @Module({
-  imports: [AuthModule, UsersModule, DatabaseModule, BoardsModule, CardsModule, CommentsModule],
+  imports: [AuthModule, UsersModule, DatabaseModule, BoardsModule, CardsModule, CommentsModule, RepositoryModule],
   controllers: [AppController],
   providers: [AppService, 
     {
