@@ -12,6 +12,9 @@ export class Comment extends Model<Comment> {
   @Column
   cardId: number;
 
+  @BelongsTo(() => Card, 'cardId')
+  card: Card;
+
   @ForeignKey(() => User)
   @Column
   userId: number;
