@@ -4,6 +4,7 @@ import { UserBoard } from "./userBoard.entity";
 import {BoardDto} from './dto/board.dto'
 import {Role} from '../users/role.entity'
 import { UsersService } from "src/users/users.service";
+import {Card} from '../cards/card.entity';
 
 @Injectable()
 export class BoardsService {
@@ -28,7 +29,7 @@ export class BoardsService {
         }}).then(async (userboards) => {
             const boards : BoardDto[] = [];
             for(let userboard of userboards){
-                boards.push(await this.boardRepository.findByPk(userboard.boardId));
+                boards.push(await this.boardRepository.findByPk(userboard.boardId, {include : [Card]}));
             }
 
             return boards;
@@ -36,7 +37,7 @@ export class BoardsService {
     }
 
     async getBoardById(boardId : number){
-        return this.boardRepository.findByPk(boardId);
+        return this.boardRepository.findByPk(boardId, {include : [Card]});
     }
 
     async updateBoard(boardId : number, board : Partial<BoardDto>){
