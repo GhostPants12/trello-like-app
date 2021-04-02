@@ -2,6 +2,7 @@ import { BadRequestException, Inject, Injectable} from '@nestjs/common';
 import {Card} from './card.entity';
 import {CardDto} from './dto/card.dto';
 import {Comment} from '../comments/comment.entity';
+import {User} from '../users/user.entity';
 
 @Injectable()
 export class CardsService{
@@ -20,7 +21,13 @@ export class CardsService{
     }
 
     async getCardById(cardId){
-        return this.cardRepository.findByPk(cardId, {include : [Comment]});
+        return this.cardRepository.findByPk(cardId, {include : [
+            {model : Comment,
+            include : [{model : User,
+                attributes : ['username']}],
+            attributes : ['id', 'text']}
+        ]
+    });
     }
 
     async updateCard(cardId, card : Partial<CardDto>){

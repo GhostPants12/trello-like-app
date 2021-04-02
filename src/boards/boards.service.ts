@@ -29,7 +29,8 @@ export class BoardsService {
         }}).then(async (userboards) => {
             const boards : BoardDto[] = [];
             for(let userboard of userboards){
-                boards.push(await this.boardRepository.findByPk(userboard.boardId, {include : [Card]}));
+                boards.push(await this.boardRepository.findByPk(userboard.boardId, {include : [{model : Card,
+                attributes: ['id', 'name', 'description']}]}));
             }
 
             return boards;
@@ -37,7 +38,10 @@ export class BoardsService {
     }
 
     async getBoardById(boardId : number){
-        return this.boardRepository.findByPk(boardId, {include : [Card]});
+        return this.boardRepository.findByPk(boardId, {include : [{model : Card,
+            attributes: ['id', 'name', 'description']}
+        ]
+    });
     }
 
     async updateBoard(boardId : number, board : Partial<BoardDto>){
