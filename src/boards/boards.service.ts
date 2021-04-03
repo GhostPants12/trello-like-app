@@ -27,7 +27,7 @@ export class BoardsService {
         return await this.userBoardRepository.findAll({where: {
             userId: userId
         }}).then(async (userboards) => {
-            const boards : BoardDto[] = [];
+            const boards : Board[] = [];
             for(let userboard of userboards){
                 boards.push(await this.boardRepository.findByPk(userboard.boardId, {include : [{model : Card,
                 attributes: ['id', 'name', 'description']}]}));
@@ -35,6 +35,33 @@ export class BoardsService {
 
             return boards;
         })
+    }
+
+    async getCreatedByUserBoards(userId : number){
+        return await this.userBoardRepository.findAll({where: {
+            userId: userId,
+            roleId : 2
+        }}).then(async (userboards) => {
+            const boards : Board[] = [];
+            for(let userboard of userboards){
+                boards.push(await this.boardRepository.findByPk(userboard.boardId, {include : [{model : Card,
+                attributes: ['id', 'name', 'description']}]}));
+            }
+
+            return boards;
+        })
+    }
+
+    async searchCreatedByUserBoards(userId : number, query : string){
+        const boards = await this.getCreatedByUserBoards(userId);
+        return boards.filter((board) => board.name.toLowerCase().includes(query.toLowerCase()))
+        .sort((a, b) => a.name.length - b.name.length);
+    }
+
+    async searchUserBoards(userId: number, query: string){
+        const boards = await this.getUserBoards(userId);
+        return boards.filter((board) => board.name.toLowerCase().includes(query.toLowerCase()))
+        .sort((a, b) => a.name.length - b.name.length);
     }
 
     async getBoardById(boardId : number){

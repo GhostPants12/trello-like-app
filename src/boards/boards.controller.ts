@@ -1,4 +1,4 @@
-import { Controller, Post, Request, Body, Get, Param, Put, Delete, HttpCode, UseGuards} from '@nestjs/common';
+import { Controller, Post, Request, Body, Get, Param, Put, Delete, HttpCode, UseGuards, Query} from '@nestjs/common';
 import {AuthService} from '../auth/auth.service';
 import {BoardDto} from './dto/board.dto';
 import {BoardsService} from './boards.service';
@@ -16,8 +16,21 @@ export class BoardsController {
 
 
     @Get('/user/boards')
-    async getUserBoards(@Request() req){
+    async getUserBoards(@Request() req, @Query('search') search){
+      if(search == null){
         return this.boardService.getUserBoards(req.user.userId);
+      }
+      
+      return this.boardService.searchUserBoards(req.user.userId, search);
+    }
+
+    @Get('/user/boards/created')
+    async getCreatedByUserBoards(@Request() req, @Query('search') search){
+      if(search == null){
+        return this.boardService.getCreatedByUserBoards(req.user.userId);
+      }
+      
+      return this.boardService.searchCreatedByUserBoards(req.user.userId, search);
     }
 
     @UseGuards(BoardUserGuard)
