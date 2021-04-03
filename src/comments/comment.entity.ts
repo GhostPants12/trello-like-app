@@ -1,10 +1,12 @@
 import { Table, Column, Model, ForeignKey, BelongsTo } from 'sequelize-typescript';
 import {User} from '../users/user.entity';
 import {Card} from '../cards/card.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 
 @Table
-export class Comment extends Model<Comment> {  
+export class Comment extends Model<Comment> {
+  @ApiProperty()  
   @Column
   text: string;
 
