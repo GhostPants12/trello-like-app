@@ -31,10 +31,15 @@ export class UsersService {
       }
 
       const salt = await bcrypt.genSalt();
-      this.usersRepository.create({
-        username: user.username,
-        email: user.email,
-        password: await bcrypt.hash(user.password, salt)
-      } as User);
+      try{
+          await this.usersRepository.create({
+            username: user.username,
+            email: user.email,
+            password: await bcrypt.hash(user.password, salt)
+        } as User);
+      }
+      catch(e){
+        throw new BadRequestException(e.message);
+      }
   }
 }
