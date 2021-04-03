@@ -3,6 +3,7 @@ import {Card} from './card.entity';
 import {CardDto} from './dto/card.dto';
 import {Comment} from '../comments/comment.entity';
 import {User} from '../users/user.entity';
+import {Board} from '../boards/board.entity';
 
 @Injectable()
 export class CardsService{
@@ -28,6 +29,27 @@ export class CardsService{
             attributes : ['id', 'text']}
         ]
     });
+    }
+
+    async getUserCards(userId){
+        let result : Array<Card> = []
+        const cards = await this.cardRepository.findAll({include : {
+            model : Board,
+            include : [User]
+        }
+        });
+        cards.filter((card) => card.board.users.some((user) => user.id === userId));
+        for(let card of cards){
+            result.push(await this.cardRepository.findByPk(card.id, {include : [Comment]}));
+        }
+
+        return result;
+    }
+
+    async searchUserCards(userId, query){
+        const userCards = await this.getUserCards(userId);
+        return userCards.filter((card) => card.name.toLowerCase().includes(query.toLowerCase()))
+        .sort((a, b) => a.name.length - b.name.length);
     }
 
     async updateCard(cardId, card : Partial<CardDto>){

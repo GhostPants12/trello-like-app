@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Post, Request, UseGuards, Put, Delete} from '@nestjs/common';
+import {Body, Controller, Get, Post, Request, UseGuards, Put, Delete, Query} from '@nestjs/common';
 import {CardDto} from './dto/card.dto';
 import {BoardUserGuard} from '../boards/boardUser.guard';
 import { AuthService } from '../auth/auth.service';
@@ -31,5 +31,14 @@ export class CardsController{
     @Get('c/:cardId')
     async getCardById(@Request() req){
         return this.cardService.getCardById(req.params.cardId);
+    }
+
+    @Get('user/cards')
+    async getUserCards(@Request() req, @Query('search') search){
+        if(search == null){
+        return this.cardService.getUserCards(req.params.userId);
+        }
+
+        return this.cardService.searchUserCards(req.params.userId, search);
     }
 }
