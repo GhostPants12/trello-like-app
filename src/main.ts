@@ -15,6 +15,7 @@ const httpsOptions = {
 
 async function bootstrap() {
   const server = express();
+  server.enable('trust proxy');
   const app = await NestFactory.create(AppModule, new ExpressAdapter(server));
   const config = new DocumentBuilder()
     .setTitle('Trello-like-app')

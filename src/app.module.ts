@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -10,6 +10,7 @@ import { BoardsModule } from './boards/boards.module';
 import { CardsModule } from './cards/cards.module';
 import { CommentsModule } from './comments/comments.module';
 import { RepositoryModule } from './repository/repository.module';
+import { HttpsRedirectMiddleware } from '@kittgen/nestjs-https-redirect';
 
 @Module({
   imports: [AuthModule, UsersModule, DatabaseModule, BoardsModule, CardsModule, CommentsModule, RepositoryModule],
@@ -21,4 +22,11 @@ import { RepositoryModule } from './repository/repository.module';
     },
   ],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer : MiddlewareConsumer){
+    consumer.apply(HttpsRedirectMiddleware({ enabled: true })).forRoutes({
+      path: '*',
+      method: RequestMethod.ALL,
+    });
+  }
+}
