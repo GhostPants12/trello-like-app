@@ -2,10 +2,10 @@
 /dist
 /node_modules
 
-#Config
-.env
-*.pem
-/secrets
+# #Config
+# .env
+# *.pem
+# /secrets
 
 # Logs
 logs
