@@ -30,7 +30,6 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   await app.init();
-  http.createServer(server).listen(process.env.HTTP_PORT);
-  https.createServer(httpsOptions, server).listen(process.env.HTTPS_PORT);
+  https.createServer(httpsOptions, server).listen(process.env.PORT);
 }
 bootstrap();
