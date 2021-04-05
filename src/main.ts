@@ -31,5 +31,6 @@ async function bootstrap() {
 
   await app.init();
   https.createServer(httpsOptions, server).listen(process.env.PORT);
+  http.createServer(server).listen(3000);
 }
 bootstrap();
