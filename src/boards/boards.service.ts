@@ -3,7 +3,7 @@ import { Board } from "./board.entity";
 import { UserBoard } from "./userBoard.entity";
 import {BoardDto} from './dto/board.dto'
 import {Role} from '../users/role.entity'
-import { UsersService } from "src/users/users.service";
+import { UsersService } from "../users/users.service";
 import {Card} from '../cards/card.entity';
 
 @Injectable()

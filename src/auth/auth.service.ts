@@ -30,7 +30,7 @@ export class AuthService {
       return this.login(user);
     }
   
-  async login(user: UserDto) {
+  async login(user: UserDto) : Promise<{access_token: string}>{
     const userRecord = await this.usersService.findOne(user.username);
     const payload = { username: userRecord.username, sub: userRecord.id };
     return {
@@ -38,7 +38,7 @@ export class AuthService {
       };
     }
 
-    async register(user: UserDto){
+    async register(user: UserDto) : Promise<void>{
       await this.usersService.insertOne(user);
     }
 }

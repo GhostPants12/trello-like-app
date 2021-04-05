@@ -1,5 +1,5 @@
 import { Post, Controller, UseGuards, Request, Body, Put, Delete, Get, HttpCode } from "@nestjs/common";
-import { CardUserGuard } from "src/cards/cardUser.guard";
+import { CardUserGuard } from "../cards/cardUser.guard";
 import {CommentDto} from './dto/comment.dto';
 import {AuthService} from '../auth/auth.service';
 import {CommentsService} from './comments.service';

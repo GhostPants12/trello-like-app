@@ -1,7 +1,7 @@
 import { Module, Global } from '@nestjs/common';
-import { userBoardsProviders } from 'src/boards/userBoards.providers';
-import { cardsProviders } from 'src/cards/cards.providers';
-import { commentsProviders } from 'src/comments/comments.providers';
+import { userBoardsProviders } from '../boards/userBoards.providers';
+import { cardsProviders } from '../cards/cards.providers';
+import { commentsProviders } from '../comments/comments.providers';
 
 @Global()
 @Module({

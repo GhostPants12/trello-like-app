@@ -7,7 +7,7 @@ import {BoardsController} from './boards.controller';
 import { rolesProviders } from '../users/roles.providers';
 import {AuthModule} from '../auth/auth.module';
 import {UsersService} from '../users/users.service';
-import { usersProviders } from 'src/users/users.providers';
+import { usersProviders } from '../users/users.providers';
 
 @Module({
     controllers: [BoardsController],
