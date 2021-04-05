@@ -24,6 +24,9 @@ export class CommentsService{
         commentRecord = await this.commentRepository.findByPk(commentRecord.id, {include : {all: true, nested: true}});
         const mentionRe = /@[a-z0-9]+/i;
         const mentions = comment.text.match(mentionRe);
+        if(mentions === null){
+            return;
+        }
         for(let user of mentions){
             const userRecord = await this.usersService.findOne(user.substring(1));
             if(userRecord !== null && commentRecord.card.board.users.some((user) => user.id == userRecord.id)){
