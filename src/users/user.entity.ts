@@ -7,7 +7,7 @@ import {UserBoard} from '../boards/userBoard.entity';
 export class User extends Model<User> {
   @ApiProperty()
   @Is('username', (value : string) => {
-    if(value.match(/^[a-z0-9\s.]+$/i) === null){
+    if(value.match(/^[a-z0-9]+$/i) === null){
       throw new Error('Username can only contain numbers and letters');
     }
   })  
