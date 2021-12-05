@@ -24,6 +24,7 @@ export const databaseProviders = [
         Label,
       ]);
       await sequelize.sync({ force: true });
+
       return sequelize;
     },
   },
