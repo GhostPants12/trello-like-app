@@ -1,5 +1,4 @@
-
-export class BoardDto{
-    id?: number;
-    name: string;
+export class BoardDto {
+  id?: number;
+  name: string;
 }

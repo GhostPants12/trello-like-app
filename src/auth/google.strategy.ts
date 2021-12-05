@@ -8,7 +8,6 @@ config();
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
-
   constructor() {
     super({
       clientID: process.env.GOOGLE_CLIENT_ID,
@@ -18,15 +17,21 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     });
   }
 
-  async validate (accessToken: string, refreshToken: string, profile: any, done: VerifyCallback): Promise<any> {
-    const { name, emails, photos } = profile
+  async validate(
+    accessToken: string,
+    refreshToken: string,
+    profile: any,
+    done: VerifyCallback,
+  ): Promise<any> {
+    const { name, emails, photos, id } = profile;
     const user = {
       email: emails[0].value,
+      id: id,
       firstName: name.givenName,
       lastName: name.familyName,
       picture: photos[0].value,
-      accessToken
-    }
+      accessToken,
+    };
     done(null, user);
   }
 }

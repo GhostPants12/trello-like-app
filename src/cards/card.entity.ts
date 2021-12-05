@@ -1,22 +1,28 @@
-import { Table, Column, Model, ForeignKey, HasMany, BelongsTo } from 'sequelize-typescript';
-import {Board} from '../boards/board.entity';
-import {Comment} from '../comments/comment.entity';
-
+import {
+  BelongsTo,
+  Column,
+  ForeignKey,
+  HasMany,
+  Model,
+  Table,
+} from 'sequelize-typescript';
+import { Comment } from '../comments/comment.entity';
+import { List } from '../lists/list.entity';
 
 @Table
-export class Card extends Model<Card> {  
+export class Card extends Model<Card> {
   @Column
   name: string;
 
   @Column
   description: string;
 
-  @ForeignKey(() => Board)
+  @ForeignKey(() => List)
   @Column
-  boardId: number;
+  listId: number;
 
-  @BelongsTo(() => Board, 'boardId')
-  board : Board;
+  @BelongsTo(() => List, 'listId')
+  list: List;
 
   @HasMany(() => Comment)
   comments: Comment[];

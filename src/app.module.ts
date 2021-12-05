@@ -10,11 +10,24 @@ import { BoardsModule } from './boards/boards.module';
 import { CardsModule } from './cards/cards.module';
 import { CommentsModule } from './comments/comments.module';
 import { RepositoryModule } from './repository/repository.module';
+import { LabelsModule } from './labels/labels.module';
+import { ListsModule } from './lists/lists.module';
 
 @Module({
-  imports: [AuthModule, UsersModule, DatabaseModule, BoardsModule, CardsModule, CommentsModule, RepositoryModule],
+  imports: [
+    AuthModule,
+    UsersModule,
+    DatabaseModule,
+    BoardsModule,
+    CardsModule,
+    CommentsModule,
+    RepositoryModule,
+    LabelsModule,
+    ListsModule,
+  ],
   controllers: [AppController],
-  providers: [AppService, 
+  providers: [
+    AppService,
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,

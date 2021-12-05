@@ -1,3 +1,3 @@
-export class CommentDto{
-    text:string;
+export class CommentDto {
+  text: string;
 }
