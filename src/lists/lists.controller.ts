@@ -41,7 +41,7 @@ export class ListsController {
   }
 
   @UseGuards(ListUserGuard)
-  @Get('l/:ListId')
+  @Get('l/:listId')
   async getListById(@Request() req) {
     return this.listsService.getListById(req.params.listId);
   }

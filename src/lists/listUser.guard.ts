@@ -21,6 +21,7 @@ export class ListUserGuard implements CanActivate {
     const userId = request.user.userId;
     const listId = request.params.listId;
     const list = await this.listRepository.findByPk(listId);
+    console.log(list);
     if (list !== null) {
       return (
         this.userBoardRepository.findOne({

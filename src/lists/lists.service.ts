@@ -52,7 +52,7 @@ export class ListsService {
               attributes: ['text', 'userId'],
             },
           ],
-          attributes: ['id', 'text'],
+          attributes: ['id', 'name', 'description'],
         },
       ],
     });

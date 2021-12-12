@@ -23,8 +23,17 @@ export const databaseProviders = [
         List,
         Label,
       ]);
-      await sequelize.sync({ force: true });
-
+      await sequelize.sync();
+      Role.create({
+        rolename: 'User',
+      } as Role).then(() => {
+        console.log('User role inserted');
+      });
+      Role.create({
+        rolename: 'Admin',
+      } as Role).then(() => {
+        console.log('Admin role inserted');
+      });
       return sequelize;
     },
   },

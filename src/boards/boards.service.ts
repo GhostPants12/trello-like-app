@@ -3,8 +3,10 @@ import { Board } from './board.entity';
 import { UserBoard } from './userBoard.entity';
 import { BoardDto } from './dto/board.dto';
 import { Role } from '../users/role.entity';
+import { User } from '../users/user.entity';
 import { UsersService } from 'src/users/users.service';
 import { List } from '../lists/list.entity';
+import { Card } from '../cards/card.entity';
 
 @Injectable()
 export class BoardsService {
@@ -18,9 +20,11 @@ export class BoardsService {
 
   async createBoard(userId: number, board: BoardDto) {
     const createdBoard = await this.boardRepository.create(board as Board);
+    console.log(createdBoard);
     const admin = await this.rolesRepository.findOne({
       where: { rolename: 'Admin' },
     });
+    console.log(admin);
     await this.userBoardRepository.create({
       userId: userId,
       boardId: createdBoard.id,
@@ -100,7 +104,17 @@ export class BoardsService {
       include: [
         {
           model: List,
+          include: [
+            {
+              model: Card,
+              attributes: ['id', 'name'],
+            },
+          ],
           attributes: ['id', 'name'],
+        },
+        {
+          model: User,
+          attributes: ['id', 'username'],
         },
       ],
     });

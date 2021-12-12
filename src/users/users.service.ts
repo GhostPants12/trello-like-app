@@ -9,14 +9,7 @@ export class UsersService {
   constructor(
     @Inject('USERS_REPOSITORY') private usersRepository: typeof User,
     @Inject('ROLES_REPOSITORY') private rolesRepository: typeof Role,
-  ) {
-    this.rolesRepository.create({
-      rolename: 'User',
-    } as Role);
-    this.rolesRepository.create({
-      rolename: 'Admin',
-    } as Role);
-  }
+  ) {}
 
   async findOne(username: string): Promise<User | null> {
     return this.usersRepository.findOne({ where: { username: username } });

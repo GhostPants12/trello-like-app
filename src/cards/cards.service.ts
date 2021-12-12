@@ -68,7 +68,7 @@ export class CardsService {
   }
 
   async updateCard(cardId, card: Partial<CardDto>) {
-    if ((card.name !== undefined, card.name.length === 0)) {
+    if (card.name !== undefined && card.name.length === 0) {
       throw new BadRequestException('Name must be not empty');
     }
 
