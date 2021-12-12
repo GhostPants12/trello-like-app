@@ -4,6 +4,7 @@ import { CardDto } from './dto/card.dto';
 import { Comment } from '../comments/comment.entity';
 import { User } from '../users/user.entity';
 import { Board } from '../boards/board.entity';
+import { Label } from '../labels/label.entity';
 
 @Injectable()
 export class CardsService {
@@ -35,6 +36,10 @@ export class CardsService {
             },
           ],
           attributes: ['id', 'text'],
+        },
+        {
+          model: Label,
+          attributes: ['text'],
         },
       ],
     });

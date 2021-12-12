@@ -17,23 +17,21 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import BoardService from '../../services/BoardService';
 import { Link as LinkRouter, useNavigate, useParams } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
-import CardService from '../../services/CardService';
+import CommentService from '../../services/CommentService';
 
 const theme = createTheme();
 
-export const CreateCardPage = () => {
-  const navigate = useNavigate();
+export const EditComment = () => {
   const id = useParams().id;
-  const boardId = useParams().boardId;
+  const { boardId, cardId, listId } = useParams();
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    CardService.postCard(
-      id,
-      data.get('name'),
-      data.get('description'),
-    ).then(() => navigate('/b/' + boardId + '/l/' + id));
+    CommentService.putComment(id, data.get('name')).then(() =>
+      navigate('/b/' + boardId + '/l/' + listId + '/c/' + cardId),
+    );
   };
 
   return (
@@ -54,7 +52,7 @@ export const CreateCardPage = () => {
             color="text.primary"
             gutterBottom
           >
-            Create Card
+            Edit Comment
           </Typography>
           <Box
             component="form"
@@ -67,20 +65,9 @@ export const CreateCardPage = () => {
               required
               fullWidth
               id="name"
-              label="Name"
+              label="Text"
               name="name"
               autoComplete="name"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              multiline
-              id="description"
-              label="Description"
-              name="description"
-              autoComplete="description"
               autoFocus
             />
             <Button
@@ -89,7 +76,7 @@ export const CreateCardPage = () => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Create Card
+              Update Comment
             </Button>
           </Box>
         </Container>

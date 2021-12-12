@@ -8,6 +8,7 @@ import { rolesProviders } from '../users/roles.providers';
 import { AuthModule } from '../auth/auth.module';
 import { UsersService } from '../users/users.service';
 import { usersProviders } from 'src/users/users.providers';
+import { listsProviders } from '../lists/lists.providers';
 
 @Module({
   controllers: [BoardsController],
@@ -17,6 +18,7 @@ import { usersProviders } from 'src/users/users.providers';
     ...boardsProviders,
     ...userBoardsProviders,
     ...rolesProviders,
+    ...listsProviders,
     BoardsService,
     UsersService,
   ],

@@ -8,6 +8,7 @@ import {
 } from 'sequelize-typescript';
 import { Comment } from '../comments/comment.entity';
 import { List } from '../lists/list.entity';
+import { Label } from '../labels/label.entity';
 
 @Table
 export class Card extends Model<Card> {
@@ -26,4 +27,7 @@ export class Card extends Model<Card> {
 
   @HasMany(() => Comment)
   comments: Comment[];
+
+  @HasMany(() => Label)
+  labels: Label[];
 }

@@ -12,4 +12,10 @@ export default class ListService {
   static getList = async (listId) => {
     return $api.get('l/' + listId).then((response) => response.data);
   };
+
+  static putList = async (listId, text) => {
+    return $api
+      .put('l/' + listId, { name: text })
+      .then((response) => console.log(response));
+  };
 }

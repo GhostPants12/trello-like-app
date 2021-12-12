@@ -11,6 +11,10 @@ export default class BoardService {
     return $api.get('b/' + id).then((response) => response.data);
   };
 
+  static getRole = async (id) => {
+    return $api.get('b/' + id + '/role').then((response) => response.data);
+  };
+
   static postBoard = async (board) => {
     return $api.post('b', board).then((response) => console.log(response));
   };
@@ -19,9 +23,9 @@ export default class BoardService {
     return $api.put('b/' + id, board).then((response) => console.log(response));
   };
 
-  static postUser = async (id, username) => {
+  static postUser = async (id, username, isObserver) => {
     return $api
-      .post('b/' + id + '/user/' + username)
+      .post('b/' + id + '/user/' + username, { isObserver: isObserver })
       .then((response) => console.log(response));
   };
 }

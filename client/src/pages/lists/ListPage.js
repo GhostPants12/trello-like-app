@@ -101,9 +101,6 @@ export const ListPage = () => {
                               <LinkRouter to={'c/update/' + card.id}>
                                 <Button size="small">Edit</Button>
                               </LinkRouter>
-                              <LinkRouter to={'c/updateList/' + card.id}>
-                                <Button size="small">Move to</Button>
-                              </LinkRouter>
                             </CardActions>
                           </Card>
                         </Grid>

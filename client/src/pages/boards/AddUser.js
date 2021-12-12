@@ -17,17 +17,26 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import BoardService from '../../services/BoardService';
 import { Link as LinkRouter, useNavigate, useParams } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
+import { Checkbox } from '@mui/material';
 
 const theme = createTheme();
 
 export const AddUser = () => {
+  const [checked, setChecked] = React.useState(true);
+
+  const handleChange = (event) => {
+    setChecked(event.target.checked);
+  };
   const navigate = useNavigate();
   const id = useParams().id;
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log(checked);
     const data = new FormData(event.currentTarget);
-    BoardService.postUser(id, data.get('name')).then(() => navigate('/'));
+    BoardService.postUser(id, data.get('name'), checked).then(() =>
+      navigate('/'),
+    );
   };
 
   return (
@@ -66,6 +75,8 @@ export const AddUser = () => {
               autoComplete="name"
               autoFocus
             />
+            <Checkbox checked={checked} onChange={handleChange} />
+            <Typography>Observer</Typography>
             <Button
               type="submit"
               fullWidth

@@ -13,6 +13,10 @@ import { CreateListPage } from './pages/lists/CreateListPage';
 import { ListPage } from './pages/lists/ListPage';
 import { CreateCardPage } from './pages/cards/CreateCardPage';
 import { CardPage } from './pages/cards/CardPage';
+import { EditComment } from './pages/cards/EditComment';
+import { CreateLabelPage } from './pages/labels/CreateLabelPage';
+import { UpdateListPage } from './pages/lists/UpdateListPage';
+import { UpdateCardPage } from './pages/cards/UpdateCardPage';
 
 export const useRoutes = () => {
   const { store } = useContext(Context);
@@ -79,10 +83,26 @@ export const useRoutes = () => {
         }
       />
       <Route
+        path="b/:boardId/l/update/:id"
+        element={
+          <RequireAuth>
+            <UpdateListPage />
+          </RequireAuth>
+        }
+      />
+      <Route
         path="b/:boardId/l/:id/c/create"
         element={
           <RequireAuth>
             <CreateCardPage />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="b/:boardId/l/:listId/c/update/:id"
+        element={
+          <RequireAuth>
+            <UpdateCardPage />
           </RequireAuth>
         }
       />
@@ -95,10 +115,18 @@ export const useRoutes = () => {
         }
       />
       <Route
-        path="b/:boardId/l/:listId/c/updateList/:id"
+        path="b/:boardId/l/:listId/c/:cardId/comments/edit/:id"
         element={
           <RequireAuth>
-            <MoveToPage />
+            <EditComment />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="b/:boardId/l/:listId/c/:id/labels"
+        element={
+          <RequireAuth>
+            <CreateLabelPage />
           </RequireAuth>
         }
       />

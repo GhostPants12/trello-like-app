@@ -29,6 +29,12 @@ export class CardsController {
   }
 
   @UseGuards(CardUserGuard)
+  @Put('l/:listId/c/:cardId')
+  async moveCard(@Request() req) {
+    return this.cardService.moveToList(req.params.cardId, req.params.listId);
+  }
+
+  @UseGuards(CardUserGuard)
   @Put('c/:cardId')
   async updateCard(@Request() req, @Body() card: Partial<CardDto>) {
     return this.cardService.updateCard(req.params.cardId, card);

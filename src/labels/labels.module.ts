@@ -8,6 +8,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { usersProviders } from '../users/users.providers';
 import { UsersService } from '../users/users.service';
 import { rolesProviders } from '../users/roles.providers';
+import { listsProviders } from '../lists/lists.providers';
 
 @Module({
   imports: [DatabaseModule, AuthModule],
@@ -16,6 +17,7 @@ import { rolesProviders } from '../users/roles.providers';
     ...labelsProviders,
     ...usersProviders,
     ...rolesProviders,
+    ...listsProviders,
     LabelsService,
     UsersService,
   ],

@@ -34,6 +34,11 @@ export const databaseProviders = [
       } as Role).then(() => {
         console.log('Admin role inserted');
       });
+      Role.create({
+        rolename: 'Observer',
+      } as Role).then(() => {
+        console.log('Observer role inserted');
+      });
       return sequelize;
     },
   },

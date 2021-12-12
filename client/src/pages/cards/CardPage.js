@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link as LinkRouter, useNavigate, useParams } from 'react-router-dom';
 import BoardService from '../../services/BoardService';
 import Box from '@mui/material/Box';
@@ -10,73 +10,96 @@ import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import { Chip, Divider } from '@mui/material';
+import { CardActionArea, Chip, Divider, Paper } from '@mui/material';
 import ListService from '../../services/ListService';
+import CommentService from '../../services/CommentService';
+import TextField from '@mui/material/TextField';
+import CardService from '../../services/CardService';
+import { Context } from '../../index';
 
-export const ListPage = () => {
-  const [list, setList] = useState(null);
+export const CardPage = () => {
+  const [card, setCard] = useState(null);
   const id = useParams().id;
   const navigate = useNavigate;
+  const { store } = useContext(Context);
+
+  console.log(store);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    CommentService.postComment(id, data.get('name')).then(() => {});
+    setCard(null);
+  };
 
   useEffect(async () => {
-    const result = await ListService.getList(id);
+    const result = await CardService.getCard(id);
     console.log(result);
-    setList(result);
-    console.log(list);
-  }, [setList]);
+    setCard(result);
+    console.log(card);
+  }, [setCard]);
 
   return (
     <main>
-      {!list ? (
+      {!card ? (
         <h1>Loading..</h1>
       ) : (
         <div>
-          <Box
-            sx={{
-              bgcolor: 'background.paper',
-              pt: 8,
-              pb: 6,
-            }}
-          >
-            <Container maxWidth="sm">
-              <Typography
-                component="h1"
-                variant="h2"
-                align="center"
-                color="text.primary"
-                gutterBottom
+          <Container sx={{ py: 8 }} maxWidth="md">
+            <Grid item xs={12} md={12}>
+              <Card
+                sx={{
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
               >
-                {list.name}
-              </Typography>
-            </Container>
-            <Container>
-              <Box sx={{ my: 3, mx: 2 }}>
-                <Typography
-                  variant="h5"
-                  align="center"
-                  color="text.secondary"
-                  paragraph
-                >
-                  Cards:
-                </Typography>
-                <Stack
-                  sx={{ pt: 4 }}
-                  direction="row"
-                  spacing={2}
-                  justifyContent="center"
-                >
-                  <LinkRouter to="c/create">
-                    <Button variant="contained">Create new card</Button>
-                  </LinkRouter>
-                </Stack>
-                <Container sx={{ py: 8 }} maxWidth="md">
-                  {/* End hero unit */}
-                  <Grid container spacing={4}>
-                    {list.cards == null ? (
-                      <em>Loading...</em>
-                    ) : (
-                      list.cards.map((card) => (
-                        <Grid item key={card.id} xs={12} sm={4} md={6}>
+                <CardContent sx={{ flexGrow: 1 }}>
+                  <Typography
+                    component="h1"
+                    variant="h2"
+                    color="text.primary"
+                    gutterBottom
+                  >
+                    {card.name}
+                  </Typography>
+                  <Grid>
+                    {card.labels && (
+                      <Stack direction="row">
+                        {card.labels.map((label, index) =>
+                          index % 2 == 1 ? (
+                            <Chip label={label.text} key={label.id} />
+                          ) : (
+                            <Chip
+                              label={label.text}
+                              key={label.id}
+                              variant="outlined"
+                            />
+                          ),
+                        )}
+                        <LinkRouter to="labels">
+                          <Chip variant="outlined" label="+ Add Label" />
+                        </LinkRouter>
+                      </Stack>
+                    )}
+                  </Grid>
+                  <Typography variant="h5" color="text.secondary" paragraph>
+                    {card.description}
+                  </Typography>
+                  <Typography
+                    component="h1"
+                    variant="h3"
+                    color="text.primary"
+                    gutterBottom
+                    align="center"
+                  >
+                    Comments
+                  </Typography>
+                  <Container sx={{ py: 8 }} maxWidth="md">
+                    {/* End hero unit */}
+                    <Grid container spacing={4}>
+                      {card.comments.map((comment) => (
+                        <Grid item key={comment.id} xs={12} sm={6} md={12}>
                           <Card
                             sx={{
                               height: '100%',
@@ -90,30 +113,65 @@ export const ListPage = () => {
                                 variant="h5"
                                 component="h2"
                               >
-                                {card.name}
+                                {comment.author.username}
                               </Typography>
-                              <Typography>{card.description}</Typography>
+                              <Typography>{comment.text}</Typography>
+                              {store.user.username ===
+                                comment.author.username && (
+                                <div>
+                                  <LinkRouter
+                                    to={'comments/edit/' + comment.id}
+                                  >
+                                    <Button type="small">Edit</Button>
+                                  </LinkRouter>
+                                  <Button type="small">Delete</Button>
+                                </div>
+                              )}
                             </CardContent>
-                            <CardActions>
-                              <LinkRouter to={'c/' + card.id}>
-                                <Button size="small">View</Button>
-                              </LinkRouter>
-                              <LinkRouter to={'c/update/' + card.id}>
-                                <Button size="small">Edit</Button>
-                              </LinkRouter>
-                              <LinkRouter to={'c/updateList/' + card.id}>
-                                <Button size="small">Move to</Button>
-                              </LinkRouter>
-                            </CardActions>
                           </Card>
                         </Grid>
-                      ))
-                    )}
-                  </Grid>
-                </Container>
-              </Box>
-            </Container>
-          </Box>
+                      ))}
+                      <Grid
+                        container
+                        spacing={0}
+                        direction="column"
+                        alignItems="center"
+                        justifyContent="center"
+                      >
+                        <Box
+                          component="form"
+                          onSubmit={handleSubmit}
+                          noValidate
+                          align="center"
+                          sx={{ mt: 1 }}
+                        >
+                          <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            multiline
+                            id="name"
+                            label="Comment"
+                            name="name"
+                            autoComplete="name"
+                            autoFocus
+                          />
+                          <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2 }}
+                          >
+                            Add Comment
+                          </Button>
+                        </Box>
+                      </Grid>
+                    </Grid>
+                  </Container>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Container>
         </div>
       )}
     </main>

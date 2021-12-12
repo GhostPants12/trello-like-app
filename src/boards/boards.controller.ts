@@ -28,6 +28,11 @@ export class BoardsController {
     return this.boardService.createBoard(req.user.userId, board);
   }
 
+  @Get('b/:id/role')
+  async getRoles(@Request() req) {
+    return this.boardService.getRole(req.user.userId, req.params.id);
+  }
+
   @Get('/user/boards')
   async getUserBoards(@Request() req, @Query('search') search) {
     if (search == null) {
@@ -67,10 +72,15 @@ export class BoardsController {
 
   @UseGuards(BoardAdminGuard)
   @Post('/b/:boardId/user/:username')
-  async inviteUser(@Request() req) {
+  async inviteUser(
+    @Request() req,
+    @Body() isObserver: { isObserver: boolean },
+  ) {
+    console.log(isObserver);
     return this.boardService.inviteUser(
       req.params.boardId,
       req.params.username,
+      isObserver.isObserver,
     );
   }
 }

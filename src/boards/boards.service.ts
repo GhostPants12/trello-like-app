@@ -5,6 +5,7 @@ import { BoardDto } from './dto/board.dto';
 import { Role } from '../users/role.entity';
 import { User } from '../users/user.entity';
 import { UsersService } from 'src/users/users.service';
+import { ListsService } from '../lists/lists.service';
 import { List } from '../lists/list.entity';
 import { Card } from '../cards/card.entity';
 
@@ -16,6 +17,7 @@ export class BoardsService {
     private userBoardRepository: typeof UserBoard,
     @Inject('ROLES_REPOSITORY') private rolesRepository: typeof Role,
     @Inject(UsersService) private usersService,
+    @Inject('LISTS_REPOSITORY') private listRepository: typeof List,
   ) {}
 
   async createBoard(userId: number, board: BoardDto) {
@@ -25,11 +27,32 @@ export class BoardsService {
       where: { rolename: 'Admin' },
     });
     console.log(admin);
+    await this.listRepository.create({
+      name: 'Archive',
+      boardId: createdBoard.id,
+    } as List);
     await this.userBoardRepository.create({
       userId: userId,
       boardId: createdBoard.id,
       roleId: admin.id,
     } as UserBoard);
+  }
+
+  async getRole(userId: number, boardId: number) {
+    const userBoards = await this.userBoardRepository.findOne({
+      where: {
+        boardId: boardId,
+        userId: userId,
+      },
+      include: [
+        {
+          model: Role,
+          attributes: ['rolename'],
+        },
+      ],
+    });
+
+    return userBoards.role;
   }
 
   async getUserBoards(userId: number) {
@@ -128,12 +151,13 @@ export class BoardsService {
     await this.boardRepository.destroy({ where: { id: boardId } });
   }
 
-  async inviteUser(boardId: number, username: string) {
+  async inviteUser(boardId: number, username: string, isObserver: boolean) {
+    const rolename = isObserver ? 'Observer' : 'User';
     await this.userBoardRepository.create({
       boardId: boardId,
       userId: (await this.usersService.findOne(username)).id,
       roleId: (
-        await this.rolesRepository.findOne({ where: { rolename: 'User' } })
+        await this.rolesRepository.findOne({ where: { rolename: rolename } })
       ).id,
     } as UserBoard);
   }
